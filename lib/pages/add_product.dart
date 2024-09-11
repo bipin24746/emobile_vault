@@ -11,8 +11,6 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  String? _selectedItem;
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -32,6 +30,7 @@ class _AddProductState extends State<AddProduct> {
                 children: [
                   const Text("Product Name"),
                   TextField(
+                    controller: ctrl.productNameCtrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -43,6 +42,7 @@ class _AddProductState extends State<AddProduct> {
                   const SizedBox(height: 20),
                   const Text("Description"),
                   TextField(
+                    controller: ctrl.productDescriptionCtrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -55,6 +55,7 @@ class _AddProductState extends State<AddProduct> {
                   const SizedBox(height: 20),
                   const Text("Image Url"),
                   TextField(
+                    controller: ctrl.productImageCtrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -66,6 +67,7 @@ class _AddProductState extends State<AddProduct> {
                   const SizedBox(height: 20),
                   const Text("Product Price"),
                   TextField(
+                    controller: ctrl.productPriceCtrl,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -80,13 +82,54 @@ class _AddProductState extends State<AddProduct> {
                     children: [
                       Flexible(
                         child: DropDown(
-                          items: ['brand1', 'brand2', 'brand3'],
+                          items: [
+                            'Apple',
+                            'Samsung',
+                            'Huawei',
+                            'Xiaomi',
+                            'OnePlus',
+                            'Google',
+                            'Sony',
+                            'LG',
+                            'Motorola',
+                            'Nokia',
+                            'Oppo',
+                            'Vivo',
+                            'Realme',
+                            'Asus',
+                            'Lenovo'
+                          ],
+                          selectedItemText: ctrl.brand.isNotEmpty
+                              ? ctrl.brand
+                              : 'Select Brand',
+                          onSelected: (selectedValue) {
+                            ctrl.brand = selectedValue ?? 'unbranded';
+                          },
                         ),
                       ),
                       const SizedBox(width: 20),
                       Flexible(
                         child: DropDown(
-                          items: ['cate1', 'cate2', 'cate3'],
+                          items: [
+                            'Smartphones',
+                            'Tablets',
+                            'Smartwatches',
+                            'Phone Accessories',
+                            'Chargers',
+                            'Headphones',
+                            'Cables',
+                            'Power Banks',
+                            'Cases & Covers',
+                            'Screen Protectors',
+                            'Bluetooth Speakers',
+                            'Memory Cards',
+                          ],
+                          selectedItemText: ctrl.category.isNotEmpty
+                              ? ctrl.category
+                              : 'Select Category',
+                          onSelected: (selectedValue) {
+                            ctrl.category = selectedValue ?? 'general';
+                          },
                         ),
                       ),
                     ],
@@ -95,6 +138,10 @@ class _AddProductState extends State<AddProduct> {
                   const Center(child: Text('Offer Product')),
                   DropDown(
                     items: ['true', 'false'],
+                    selectedItemText: ctrl.offer ? 'Yes' : 'No',
+                    onSelected: (selectedValue) {
+                      ctrl.offer = selectedValue == 'true';
+                    },
                   ),
                   const SizedBox(height: 10),
                   Center(
@@ -104,7 +151,7 @@ class _AddProductState extends State<AddProduct> {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        // Add your onPressed logic here
+                        ctrl.addProduct();
                       },
                       child: const Text("Add Product"),
                     ),

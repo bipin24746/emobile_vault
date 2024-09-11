@@ -3,15 +3,22 @@ import 'package:flutter/material.dart';
 
 class DropDown extends StatefulWidget {
   final List<String> items;
-  const DropDown({super.key, required this.items});
+  final String selectedItemText;
+  final Function(String?) onSelected;
+
+  const DropDown({
+    Key? key,
+    required this.items,
+    required this.selectedItemText,
+    required this.onSelected,
+  }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _DropDownState createState() => _DropDownState();
 }
 
 class _DropDownState extends State<DropDown> {
-  String? selectedValue;
+  String? _selectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +27,9 @@ class _DropDownState extends State<DropDown> {
         child: DropdownButtonHideUnderline(
           child: DropdownButton2<String>(
             isExpanded: true,
-            hint: const Text(
-              "Select Item",
-              style: TextStyle(fontSize: 14, color: Colors.blue),
+            hint: Text(
+              widget.selectedItemText,
+              style: const TextStyle(fontSize: 14, color: Colors.blue),
             ),
             items: widget.items
                 .map((String item) => DropdownMenuItem<String>(
@@ -33,12 +40,12 @@ class _DropDownState extends State<DropDown> {
                       ),
                     ))
                 .toList(),
-            value: selectedValue,
+            value: _selectedItem,
             onChanged: (String? newValue) {
               setState(() {
-                selectedValue = newValue;
-                print(selectedValue);
+                _selectedItem = newValue;
               });
+              widget.onSelected(newValue);
             },
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.symmetric(horizontal: 16),
